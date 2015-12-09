@@ -1,0 +1,27 @@
+{
+  "name": "karma-spec-wix-ck-editor",
+  "version": "0.0.1",
+  "description": "small modification of karma-spec-reporter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudavid4/karma-spec-wix-ck-editor.git"
+  },
+  "_npmVersion": "3.3.12",
+  "_nodeVersion": "5.1.0",
+  "author": "David Susskind <susskinddavid@gmail.com> (https://github.com/sudavid4)",
+  "dependencies": {
+    "colors": "~0.6.0"
+  },
+  "peerDependencies": {
+    "karma": ">=0.9"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sudavid4/karma-spec-wix-ck-editor/issues"
+  },
+  "homepage": "https://github.com/sudavid4/karma-spec-wix-ck-editor#readme"
+}
