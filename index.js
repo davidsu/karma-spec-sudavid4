@@ -130,9 +130,11 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
             var log = results.log[i];
             if(log.indexOf('expected:\nactual:')!==-1){
                 results.log[i] = log.replace(/(expected:\n)(actual:\n)([^\n]*\n)([^\n]*)/, '$1'.cyan+'$2'.yellow+'$3'.cyan+'$4'.yellow);
+            }else if(log.indexOf('not to be html equivalent')!==-1){
+                results.log[i] = log.replace(/(\s*Expected\s*)('[^']+')([^']*)('[^']+')/, '\n$1'.cyan+'$3'.yellow+'\n$2'.cyan+'\n$4'.yellow);
             }
             if(reporterCfg['is-one-line-stack-trace']){
-                results.log[i] = results.log[i].replace(/(at.*?\/tests\/[^\n]*)(.*\n*.*)*/, '$1'.red)
+                results.log[i] = results.log[i].replace(/(at.*?\/tests\/[^\n]*)(.*\n*.*)*/, '$1')
             }
         }
         this.failures.push(results);
