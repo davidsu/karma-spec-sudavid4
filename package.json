@@ -1,6 +1,6 @@
 {
   "name": "karma-spec-wix-ck-editor",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "small modification of karma-spec-reporter",
   "main": "index.js",
   "scripts": {

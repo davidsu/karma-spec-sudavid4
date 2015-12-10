@@ -129,7 +129,7 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
         for(var i = 0; i<results.log.length; i++){
             var log = results.log[i];
             if(log.indexOf('expect:\nactual:')!==-1){
-                results.log[i] = log.replace(/(expected:\n)(actual:\n)([^\n]*\n)([^\n]*)/, '$1'.cyan+'$2'.yellow+'$3'.cyan+'$4'.yellow);
+                results.log[i] = log.replace(/(expect:\n)(actual:\n)([^\n]*\n)([^\n]*)/, '$1'.cyan+'$2'.yellow+'$3'.cyan+'$4'.yellow);
             }else if(log.indexOf('not to be html equivalent')!==-1){
                 results.log[i] = log.replace(/(\s*Expected\s*)('[^']+')([^']*)('[^']+')/, '\n$1'.cyan+'$3'.yellow+'\n$2'.cyan+'\n$4'.yellow);
             }
