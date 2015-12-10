@@ -134,7 +134,7 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
                 results.log[i] = log.replace(/(\s*Expected\s*)('[^']+')([^']*)('[^']+')/, '\n$1'.cyan+'$3'.yellow+'\n$2'.cyan+'\n$4'.yellow);
             }
             if(reporterCfg['is-one-line-stack-trace']){
-                results.log[i] = results.log[i].replace(/(at.*?\/tests\/[^\n]*)(.*\n*.*)*/, '$1')
+                results.log[i] = results.log[i].replace(/(at.*\/tests\/.*)(.|\n)*/, '$1')
             }
         }
         this.failures.push(results);
