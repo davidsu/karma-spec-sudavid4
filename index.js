@@ -125,16 +125,22 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
         };
 
     function noop(){}
+    function paintJsonForHtmlEquivalent(resultsLog, i){
+        resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*)ACTUAL/, '$1'.cyan+'ACTUAL');
+        resultsLog[i] = resultsLog[i].replace(/(ACTUAL(.|\n)*])/, '$1'.yellow);
+    }
     this.onSpecFailure = function(browsers, results) {
         for(var i = 0; i<results.log.length; i++){
             var log = results.log[i];
             if(log.indexOf('expect:\nactual:')!==-1){
                 results.log[i] = log.replace(/(expect:\n)(actual:\n)([^\n]*\n)([^\n]*)/, '$1'.cyan+'$2'.yellow+'$3'.cyan+'$4'.yellow);
+                paintJsonForHtmlEquivalent(results.log, i);
             }else if(log.indexOf('not to be html equivalent')!==-1){
                 results.log[i] = log.replace(/(\s*Expected\s*)('[^']+')([^']*)('[^']+')/, '\n$1'.cyan+'$3'.yellow+'\n$2'.cyan+'\n$4'.yellow);
+                paintJsonForHtmlEquivalent(results.log, i);
             }
             if(reporterCfg['is-one-line-stack-trace']){
-                results.log[i] = results.log[i].replace(/(at.*\/tests\/.*)(.|\n)*/, '$1')
+                results.log[i] = results.log[i].replace(/(at.*?\/tests\/[^\n]*)(.*\n*.*)*/, '$1')
             }
         }
         this.failures.push(results);
