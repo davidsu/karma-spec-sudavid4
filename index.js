@@ -126,8 +126,12 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
 
     function noop(){}
     function paintJsonForHtmlEquivalent(resultsLog, i){
-        resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*)ACTUAL/, '$1'.cyan+'ACTUAL');
-        resultsLog[i] = resultsLog[i].replace(/(ACTUAL(.|\n)*])/, '$1'.yellow);
+        if(require('lodash').contains(process.argv, '--json')) {
+            resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*)ACTUAL/, '$1'.cyan + 'ACTUAL');
+            resultsLog[i] = resultsLog[i].replace(/(ACTUAL(.|\n)*])/, '$1'.yellow);
+        }else{
+            resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*?)at.*?\//, 'at');
+        }
     }
     this.onSpecFailure = function(browsers, results) {
         for(var i = 0; i<results.log.length; i++){
