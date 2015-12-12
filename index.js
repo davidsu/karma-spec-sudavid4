@@ -130,7 +130,7 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
             resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*)ACTUAL/, '$1'.cyan + 'ACTUAL');
             resultsLog[i] = resultsLog[i].replace(/(ACTUAL(.|\n)*])/, '$1'.yellow);
         }else{
-            resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*?)at.*?\//, 'at');
+            resultsLog[i] = resultsLog[i].replace(/(EXPECTED(.|\n)*?)(at|@).*?\//, 'at');
         }
     }
     this.onSpecFailure = function(browsers, results) {
