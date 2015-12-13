@@ -1,6 +1,6 @@
 {
   "name": "karma-spec-sudavid4",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "small modification of karma-spec-reporter",
   "main": "index.js",
   "scripts": {
