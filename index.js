@@ -129,9 +129,19 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
         for(var i = 0; i<results.log.length; i++){
             var log = results.log[i];
             if(log.indexOf('expected to be html equivalent.\n')!==-1){
-                results.log[i] = log.replace(/(expected to be html equivalent.\n)([^\n]*\n)([^\n]*)/, '$1'+'$2'.yellow+'$3'.cyan);
+                results.log[i] = log.replace(
+                    /(expected to be html equivalent.\n)([^\n]*\n)([^\n]*)/,
+                    '$1'+'$2'.yellow+'$3'.cyan
+                );
             }else if(log.indexOf('not to be html equivalent')!==-1){
-                results.log[i] = log.replace(/(\s*Expected\s*)('[^']+')([^']*)('[^']+')/, '\n$1'.cyan+'$3'.yellow+'\n$2'.cyan+'\n$4'.yellow);
+                results.log[i] = log.replace(
+                    /(\s*Expected\s*)('[^']+')([^']*)('[^']+')/,
+                    '\n$1'.cyan+'$3'.yellow+'\n$2'.cyan+'\n$4'.yellow
+                );
+            }else if(log.match(/Expected.*to equal/)){
+                results.log[i] = log.replace(
+                    /(Expected )(.*?)( to equal )(.*)\./,
+                    '\n$1$3' + '\n$2'.cyan + '\n$4'.yellow );
             }
             if(reporterCfg['is-one-line-stack-trace']){
                 results.log[i] = results.log[i].replace(/(at.*?\/tests\/[^\n]*)(.*\n*.*)*/, '$1')
