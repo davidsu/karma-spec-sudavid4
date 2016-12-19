@@ -1,87 +1,30 @@
 require('colors');
-var successCharIndicator = 'S';
-var failureCharIndicator = 'F';
-var successChar = '✓';
-var failureChar = '✗';
-function prettyHtml(str) {
-    var notIndented = str.replace(/</g, '\n<').replace(/>(.)/g, '>\n$1');
-    var indent = 0;
-    var indentStr = '    ';
-    var notIndentedArr = notIndented.split('\n').map(function (val) {
-        var changeIndent = 0;
-        if (!val || !val.indexOf) {
-            return val;
-        }
-        var isBr = /<br.*>/.test(val);
-        if (val.indexOf('</') === 0) {
-            indent--;
-            if (indent < 0) {
-                indent = 0;
-            }
-        } else if (val.indexOf('<') === 0 && !isBr) {
-            changeIndent++;
-        }
-        var res = indentStr.repeat(indent) + val;
-        indent += changeIndent;
-        return res;
-    });
-    var res = notIndentedArr.join('\n');
-    return res.trim();
-}
 
-function markSuccessUpDown(arr1, arr2) {
-    var i;
-    for (i = 0; (i < arr1.length && i < arr2.length); i++) {
-        if (arr1[i] === arr2[i]) {
-            arr1[i] = arr2[i] = successCharIndicator + arr1[i];
-        }
-    }
-}
-
-function markSuccessDownUp(arr1, arr2) {
-    var i = arr1.length - 1, j = arr2.length - 1;
-    while (i >= 0 && j >= 0) {
-        if (arr1[i] === arr2[j] && arr1[i][0] !== successCharIndicator) {
-            arr1[i] = arr2[j] = successCharIndicator+arr1[i];
-            i--;
-            j--;
-        } else {
-            return;
-        }
-    }
-}
-function markFailures(arr) {
-    for (var i = 0; i < arr.length; i++) {
-        var val = arr[i];
-        if (val [0] !== successCharIndicator) {
-            arr[i] = failureCharIndicator+val;
-        }
-    }
-}
-
-function colorFailuresAndSuccesses(str, baseColor) {
-    var strArr = str.split('\n');
-    strArr = strArr.map(function (val) {
-        if (val[0] === successCharIndicator) {
-            return successChar.green + val.substr(1)[baseColor];
-        }
-        return failureChar.red + val.substr(1)[baseColor] ;
-    });
-    return strArr.join('\n');
-}
-
-function addInfoToPrettyHtml(actual, expected) {
-    console.log('boob');
-    var actualArr = actual.split('\n'), expectedArr = expected.split('\n');
-    markSuccessUpDown(actualArr, expectedArr);
-    markSuccessDownUp(actualArr, expectedArr);
-    markFailures(actualArr);
-    markFailures(expectedArr);
-    return {
-        acutal: actualArr.join('\n'),
-        expected: expectedArr.join('\n')
-    };
-}
+function prettyHtml(str){
+       var notIndented = str.replace(/</g, '\n<').replace(/>(.)/g, '>\n$1');
+       var indent = 0;
+       var indentStr = '    ';
+       var notIndentedArr = notIndented.split('\n').map(function(val){
+           var changeIndent = 0;
+           if(!val || !val.indexOf){
+             return val;
+           }
+           var isBr = /<br.*>/.test(val);
+           if(val.indexOf('</') === 0){
+                indent--;
+                if(indent<0){
+                    indent = 0;
+                }
+            }else if(val.indexOf('<') === 0 && !isBr){
+               changeIndent++;
+           }
+           var res = indentStr.repeat(indent) + val;
+           indent+=changeIndent;
+           return res;
+       });
+       var res = notIndentedArr.join('\n');
+       return res;
+   }
 
 var SpecReporter = function (baseReporterDecorator, formatError, config) {
     baseReporterDecorator(this);
@@ -214,11 +157,8 @@ var SpecReporter = function (baseReporterDecorator, formatError, config) {
             var log = results.log[i];
             if (log.indexOf('expected to be html equivalent.\n') !== -1) {
                 results.log[i] = log.replace(
-                    /(expected to be html equivalent.\n)([^\n]*)\n([^\n]*)/, function (matched, g1, gExpected, gActual) {
-                        var prettyResults = addInfoToPrettyHtml(prettyHtml(gExpected.trim()), prettyHtml(gActual.trim()));
-                        var actual = colorFailuresAndSuccesses(prettyResults.acutal, 'cyan');
-                        var expected = colorFailuresAndSuccesses(prettyResults.expected, 'yellow');
-                        return g1.red + expected + '\n' + actual
+                    /(expected to be html equivalent.\n)([^\n]*\n)([^\n]*)/, function (matched, g1, g2, g3) {
+                        return g1.failure + prettyHtml(g2).yellow + prettyHtml(g3).cyan
                     }
                 );
             } else if (log.indexOf('not to be html equivalent') !== -1) {
@@ -252,4 +192,3 @@ SpecReporter.$inject = ['baseReporterDecorator', 'formatError', 'config'];
 module.exports = {
     'reporter:spec': ['type', SpecReporter]
 };
-

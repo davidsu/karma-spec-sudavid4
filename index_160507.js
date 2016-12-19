@@ -252,4 +252,3 @@ SpecReporter.$inject = ['baseReporterDecorator', 'formatError', 'config'];
 module.exports = {
     'reporter:spec': ['type', SpecReporter]
 };
-
